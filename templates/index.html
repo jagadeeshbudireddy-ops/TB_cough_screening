@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>AI TB Cough Screening</title>
+
+    <link rel="stylesheet"
+          href="{{ url_for('static', filename='style.css') }}">
+</head>
+
+<body class="page-background">
+
+    <div class="container">
+
+        <div class="page-controls">
+        <label class="language-control" for="languageSelect">
+            <span data-i18n="language">Language</span>
+            <select id="languageSelect" aria-label="Select language">
+                <option value="en">English</option>
+                <option value="hi">हिन्दी</option>
+                <option value="te">తెలుగు</option>
+            </select>
+        </label>
+
+        <button class="theme-toggle" type="button" id="themeToggle" aria-label="Switch to dark mode">
+            Dark mode
+        </button>
+        </div>
+        <div class="header">
+            <h1 data-i18n="title">AI-Based TB Cough Screening</h1>
+
+            <p data-i18n="subtitle">
+                Cough Audio Analysis using Deep Learning
+            </p>
+        </div>
+
+
+        <div class="card">
+
+            <h2 data-i18n="uploadTitle">Upload Cough Audio</h2>
+
+            <p class="description" data-i18n="description">
+                Upload a cough recording in WAV format for
+                AI-based screening analysis.
+            </p>
+
+
+            <form method="POST"
+                  enctype="multipart/form-data">
+
+                <div class="upload-box">
+
+                    <label for="audio" data-i18n="fileLabel">
+                        Select .WAV Audio File
+                    </label>
+
+                    <input
+                        type="file"
+                        id="audio"
+                        name="audio"
+                        accept=".wav"
+                        required
+                    >
+
+                </div>
+
+
+                <button type="submit" data-i18n="analyze">
+                    Analyze Cough
+                </button>
+
+            </form>
+
+
+            {% if result %}
+
+            <div class="result">
+
+                <h2 data-i18n="resultTitle">Screening Result</h2>
+
+                <p class="result-text">
+                    <span data-result-key="{% if result == 'TB-associated cough pattern detected' %}tbResult{% else %}healthyResult{% endif %}">{{ result }}</span>
+                </p>
+
+                {% if confidence %}
+
+                <p class="confidence">
+                    <span data-i18n="confidence">Model confidence</span>: {{ confidence }}%
+                </p>
+
+                {% endif %}
+
+            </div>
+
+            {% endif %}
+
+
+            {% if error %}
+
+            <div class="error">
+
+                {{ error }}
+
+            </div>
+
+            {% endif %}
+
+
+            <div class="disclaimer">
+
+                <strong data-i18n="important">Important:</strong>
+
+                <span data-i18n="disclaimer">This application is a research prototype for
+                cough-audio screening. It is not a medical
+                diagnostic tool. The result should not be used
+                to confirm or rule out tuberculosis. Clinical
+                evaluation and appropriate medical testing are required.</span>
+
+            </div>
+
+        </div>
+
+
+        <div class="footer">
+
+            <p>
+                <span data-i18n="footerTitle">AI-Based Tuberculosis Screening Using Cough Audio</span>
+            </p>
+
+            <p>
+                <span data-i18n="footerSubtitle">B.Tech Academic Project</span>
+            </p>
+
+        </div>
+
+    </div>
+
+    <script>
+        const themeToggle = document.getElementById("themeToggle");
+        const languageSelect = document.getElementById("languageSelect");
+        const savedTheme = localStorage.getItem("theme");
+        const savedLanguage = localStorage.getItem("language") || "en";
+
+        const translations = {
+            en: {
+                language: "Language",
+                title: "AI-Based TB Cough Screening",
+                subtitle: "Cough Audio Analysis using Deep Learning",
+                uploadTitle: "Upload Cough Audio",
+                description: "Upload a cough recording in WAV format for AI-based screening analysis.",
+                fileLabel: "Select .WAV Audio File",
+                analyze: "Analyze Cough",
+                resultTitle: "Screening Result",
+                confidence: "Model confidence",
+                tbResult: "TB-associated cough pattern detected",
+                healthyResult: "Healthy-associated cough pattern detected",
+                important: "Important:",
+                disclaimer: "This application is a research prototype for cough-audio screening. It is not a medical diagnostic tool. The result should not be used to confirm or rule out tuberculosis. Clinical evaluation and appropriate medical testing are required.",
+                footerTitle: "AI-Based Tuberculosis Screening Using Cough Audio",
+                footerSubtitle: "B.Tech Academic Project"
+            },
+            hi: {
+                language: "भाषा",
+                title: "AI आधारित टीबी खांसी जांच",
+                subtitle: "डीप लर्निंग द्वारा खांसी की ऑडियो जांच",
+                uploadTitle: "खांसी की ऑडियो अपलोड करें",
+                description: "AI आधारित जांच के लिए WAV प्रारूप में खांसी की रिकॉर्डिंग अपलोड करें।",
+                fileLabel: ".WAV ऑडियो फ़ाइल चुनें",
+                analyze: "खांसी की जांच करें",
+                resultTitle: "जांच का परिणाम",
+                confidence: "मॉडल का विश्वास",
+                tbResult: "टीबी से संबंधित खांसी का पैटर्न पाया गया",
+                healthyResult: "स्वस्थ खांसी का पैटर्न पाया गया",
+                important: "महत्वपूर्ण:",
+                disclaimer: "यह एप्लिकेशन खांसी की ऑडियो जांच के लिए एक शोध प्रोटोटाइप है। यह चिकित्सा निदान उपकरण नहीं है। परिणाम का उपयोग टीबी की पुष्टि या उसे नकारने के लिए नहीं किया जाना चाहिए। चिकित्सकीय जांच और उचित परीक्षण आवश्यक हैं।",
+                footerTitle: "खांसी की ऑडियो द्वारा AI आधारित टीबी जांच",
+                footerSubtitle: "बी.टेक शैक्षणिक परियोजना"
+            },
+            te: {
+                language: "భాష",
+                title: "AI ఆధారిత TB దగ్గు పరీక్ష",
+                subtitle: "డీప్ లెర్నింగ్ ద్వారా దగ్గు ఆడియో విశ్లేషణ",
+                uploadTitle: "దగ్గు ఆడియోను అప్లోడ్ చేయండి",
+                description: "AI ఆధారిత పరీక్ష కోసం WAV ఫార్మాట్‌లో దగ్గు రికార్డింగ్‌ను అప్లోడ్ చేయండి.",
+                fileLabel: ".WAV ఆడియో ఫైల్‌ను ఎంచుకోండి",
+                analyze: "దగ్గును విశ్లేషించండి",
+                resultTitle: "పరీక్ష ఫలితం",
+                confidence: "మోడల్ విశ్వసనీయత",
+                tbResult: "TB సంబంధిత దగ్గు నమూనా గుర్తించబడింది",
+                healthyResult: "ఆరోగ్యకరమైన దగ్గు నమూనా గుర్తించబడింది",
+                important: "ముఖ్యమైనది:",
+                disclaimer: "ఈ అప్లికేషన్ దగ్గు ఆడియో పరీక్ష కోసం రూపొందించిన పరిశోధనా నమూనా. ఇది వైద్య నిర్ధారణ సాధనం కాదు. క్షయవ్యాధిని నిర్ధారించడానికి లేదా తిరస్కరించడానికి ఈ ఫలితాన్ని ఉపయోగించకూడదు. వైద్యుల పరీక్ష మరియు తగిన వైద్య పరీక్షలు అవసరం.",
+                footerTitle: "దగ్గు ఆడియోను ఉపయోగించి AI ఆధారిత TB పరీక్ష",
+                footerSubtitle: "B.Tech విద్యా ప్రాజెక్ట్"
+            }
+        };
+
+        if (savedTheme === "dark") {
+            document.body.classList.add("dark-mode");
+        }
+
+        function updateLanguage(language) {
+            document.documentElement.lang = language;
+            languageSelect.value = language;
+            document.querySelectorAll("[data-i18n]").forEach((element) => {
+                element.textContent = translations[language][element.dataset.i18n];
+            });
+            document.querySelectorAll("[data-result-key]").forEach((element) => {
+                element.textContent = translations[language][element.dataset.resultKey];
+            });
+        }
+
+        function updateThemeButton() {
+            const darkModeEnabled = document.body.classList.contains("dark-mode");
+            themeToggle.textContent = darkModeEnabled ? "Light mode" : "Dark mode";
+            themeToggle.setAttribute(
+                "aria-label",
+                darkModeEnabled ? "Switch to light mode" : "Switch to dark mode"
+            );
+        }
+
+        themeToggle.addEventListener("click", () => {
+            const darkModeEnabled = document.body.classList.toggle("dark-mode");
+            localStorage.setItem("theme", darkModeEnabled ? "dark" : "light");
+            updateThemeButton();
+        });
+
+        languageSelect.addEventListener("change", () => {
+            localStorage.setItem("language", languageSelect.value);
+            updateLanguage(languageSelect.value);
+        });
+
+        updateThemeButton();
+        updateLanguage(savedLanguage);
+    </script>
+
+</body>
+</html>

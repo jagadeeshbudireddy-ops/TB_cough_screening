@@ -1,0 +1,218 @@
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+:root {
+    --text-color: #222;
+    --muted-text: #666;
+    --card-background: #fff;
+    --upload-border: #aaa;
+    --result-background: #eef6ff;
+    --error-background: #ffecec;
+    --disclaimer-background: #fff8e1;
+}
+
+body {
+    font-family: Arial, sans-serif;
+    background:
+        linear-gradient(rgba(190, 223, 248, 0.72), rgba(215, 235, 248, 0.72)),
+        url("/static/background.png") center / cover fixed no-repeat;
+    color: var(--text-color);
+    min-height: 100vh;
+    transition: color 0.25s ease;
+}
+
+body.dark-mode {
+    background:
+        linear-gradient(rgba(8, 18, 30, 0.84), rgba(8, 18, 30, 0.84)),
+        url("/static/background.png") center / cover fixed no-repeat;
+    --text-color: #e7eef7;
+    --muted-text: #b4c1cf;
+    --card-background: #162536;
+    --upload-border: #64788c;
+    --result-background: #203d58;
+    --error-background: #512b35;
+    --disclaimer-background: #4d4329;
+}
+
+.container {
+    width: 90%;
+    max-width: 850px;
+    margin: 50px auto;
+}
+
+.page-controls {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+    margin-bottom: 18px;
+}
+
+.language-control {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    color: #16324a;
+    font-size: 14px;
+    font-weight: bold;
+}
+
+.language-control select {
+    padding: 8px 10px;
+    border: 1px solid rgba(22, 50, 74, 0.35);
+    border-radius: 8px;
+    background: rgba(255, 255, 255, 0.9);
+    color: #16324a;
+    font-size: 14px;
+}
+
+.theme-toggle {
+    display: block;
+    width: auto;
+    margin: 0;
+    padding: 9px 15px;
+    border: 1px solid rgba(255, 255, 255, 0.45);
+    border-radius: 8px;
+    background: rgba(255, 255, 255, 0.88);
+    color: #16324a;
+    font-size: 14px;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+.dark-mode .theme-toggle {
+    background: #263f56;
+    color: #f3f7fb;
+    border-color: #6e879e;
+}
+
+.dark-mode .language-control {
+    color: #e7eef7;
+}
+
+.dark-mode .language-control select {
+    background: #263f56;
+    color: #f3f7fb;
+    border-color: #6e879e;
+}
+
+.header {
+    text-align: center;
+    margin-bottom: 30px;
+}
+
+.header h1 {
+    font-size: 34px;
+    margin-bottom: 10px;
+}
+
+.header p,
+.description {
+    color: var(--muted-text);
+}
+
+.header p {
+    font-size: 17px;
+}
+
+.card {
+    background: var(--card-background);
+    padding: 40px;
+    border-radius: 15px;
+    box-shadow: 0 5px 20px rgba(0, 0, 0, 0.08);
+}
+
+.card h2 {
+    text-align: center;
+    margin-bottom: 15px;
+}
+
+.description {
+    text-align: center;
+    margin-bottom: 30px;
+}
+
+.upload-box {
+    border: 2px dashed var(--upload-border);
+    padding: 35px;
+    text-align: center;
+    border-radius: 10px;
+    margin-bottom: 25px;
+}
+
+.upload-box label {
+    display: block;
+    font-size: 18px;
+    font-weight: bold;
+    margin-bottom: 15px;
+}
+
+input[type="file"] {
+    display: block;
+    margin: auto;
+}
+
+button:not(.theme-toggle) {
+    display: block;
+    width: 100%;
+    padding: 14px;
+    border: none;
+    border-radius: 8px;
+    background: #2563eb;
+    color: white;
+    font-size: 17px;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+button:not(.theme-toggle):hover {
+    background: #1d4ed8;
+}
+
+.result {
+    margin-top: 30px;
+    padding: 25px;
+    text-align: center;
+    border-radius: 10px;
+    background: var(--result-background);
+}
+
+.result-text {
+    font-size: 20px;
+    font-weight: bold;
+    margin: 15px 0;
+}
+
+.confidence {
+    font-size: 16px;
+    color: var(--muted-text);
+}
+
+.error {
+    margin-top: 20px;
+    padding: 15px;
+    background: var(--error-background);
+    color: var(--text-color);
+    border-radius: 8px;
+    text-align: center;
+}
+
+.disclaimer {
+    margin-top: 30px;
+    padding: 18px;
+    background: var(--disclaimer-background);
+    border-radius: 8px;
+    font-size: 13px;
+    line-height: 1.6;
+    color: var(--muted-text);
+}
+
+.footer {
+    text-align: center;
+    margin-top: 25px;
+    color: var(--muted-text);
+    font-size: 13px;
+}
